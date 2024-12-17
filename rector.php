@@ -39,5 +39,5 @@ return RectorConfig::configure()
         strictBooleans: true
     )
     ->withParallel()
-    ->withPHPStanConfigs([__DIR__.'/phpstan.dist.neon']) // @todo fait quoi exactement ?
+    ->withPHPStanConfigs([__DIR__.'/phpstan.neon']) // @todo fait quoi exactement ?
 ;

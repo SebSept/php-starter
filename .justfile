@@ -72,10 +72,10 @@ req-dev package:
     {{composer}} req {{package}} --dev
 
 tests format='--testdox':
-    {{docker_php_exec}} php bin/phpunit {{format}}
+    {{docker_php_exec}} php vendor/bin/phpunit {{format}}
 
 test filter:
-    {{docker_php_exec}} php bin/phpunit --filter {{filter}}
+    {{docker_php_exec}} php vendor/bin/phpunit --filter {{filter}}
 
 # création d'un test
 # The test type must be one of "TestCase", "KernelTestCase", "WebTestCase", "ApiTestCase", "PantherTestCase"

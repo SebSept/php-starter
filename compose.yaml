@@ -1,4 +1,3 @@
-name: composer-starter
 services:
   nginx:
     depends_on:
