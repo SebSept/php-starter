@@ -1,4 +1,3 @@
-set dotenv-load
 docker_php_exec := "docker compose exec -it -u climber php"
 symfony := docker_php_exec + " symfony "
 composer := symfony + " composer "
@@ -7,7 +6,8 @@ docker_exec_nginx := "docker compose exec -it -u root nginx"
 browser := "firefox"
 
 up:
-    docker compose up -d
+    docker pull
+    docker compose up --detach --remove-orphans --build
 
 # update source files + docker compose down+up
 update: && tests
@@ -24,6 +24,7 @@ browser:
 fish:
     {{docker_php_exec}} fish
 
+# phpunit tests
 [private]
 fish_root:
     docker compose exec -it -u root php fish
@@ -73,6 +74,17 @@ req-dev package:
 
 tests format='--testdox':
     {{docker_php_exec}} php vendor/bin/phpunit {{format}}
+
+# watch src then run tests
+tests_watch:
+    find src -name \*\.php | entr just tests
+
+#tests_xdebug:
+tests_xdebug:
+    {{docker_php_exec}} env XDEBUG_MODE=debug XDEBUG_SESSION=1 XDEBUG_CONFIG="client_host=host.docker.internal client_port=9003" PHP_IDE_CONFIG="serverName=mydocker" php vendor/bin/phpunit
+
+run_xdebug:
+    {{docker_php_exec}} env XDEBUG_MODE=debug XDEBUG_SESSION=1 XDEBUG_CONFIG="client_host=host.docker.internal client_port=9003" PHP_IDE_CONFIG="serverName=mydocker" php index.php
 
 test filter:
     {{docker_php_exec}} php vendor/bin/phpunit --filter {{filter}}
