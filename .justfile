@@ -1,8 +1,8 @@
-set dotenv-load
 docker_php_exec := "docker compose exec -it php"
 composer := docker_php_exec + " composer "
 
 up:
+    docker pull
     docker compose up --detach --remove-orphans --build
 
 # update source files + docker compose down+up
@@ -16,15 +16,17 @@ update: && tests
 fish:
     {{docker_php_exec}} fish
 
+# phpunit tests
 tests format='--testdox':
     {{docker_php_exec}} php vendor/bin/phpunit {{format}}
 
-#tests_xdebug:
-tests_xdebug:
-    {{docker_php_exec}} env XDEBUG_MODE=debug XDEBUG_SESSION=1 XDEBUG_CONFIG="client_host=host.docker.internal client_port=9003" PHP_IDE_CONFIG="serverName=mydocker" php vendor/bin/phpunit
+# watch src then run tests
+tests_watch:
+    find src -name \*\.php | entr just tests
 
-run_xdebug:
-    {{docker_php_exec}} env XDEBUG_MODE=debug XDEBUG_SESSION=1 XDEBUG_CONFIG="client_host=host.docker.internal client_port=9003" PHP_IDE_CONFIG="serverName=mydocker" php index.php
+# tests_xdebug:
+tests_xdebug:
+    {{docker_php_exec}} env XDEBUG_MODE=debug XDEBUG_SESSION=1 XDEBUG_CONFIG="client_host=host.docker.internal client_port=9003" PHP_IDE_CONFIG="serverName=myrepl" php vendor/bin/phpunit
 
 # interactive php shell
 psysh:
