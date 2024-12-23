@@ -6,7 +6,7 @@ docker_exec_nginx := "docker compose exec -it -u root nginx"
 browser := "firefox"
 
 up:
-    docker pull
+    docker compose pull
     docker compose up --detach --remove-orphans --build
 
 # update source files + docker compose down+up
