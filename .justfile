@@ -77,7 +77,12 @@ tests format='--testdox':
 
 # watch src then run tests
 tests_watch:
-    find src -name \*\.php | entr just tests
+    #!/usr/bin/env sh
+    if ! command -v entr >/dev/null 2>&1; then
+        echo "Error: entr is not installed. Please install it first."
+        exit 1
+    fi
+    find src -name \*\.php | entr -n sh -c 'docker compose exec -T -u dev php vendor/bin/phpunit --testdox'
 
 #tests_xdebug:
 tests_xdebug:
