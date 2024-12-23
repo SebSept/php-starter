@@ -23,7 +23,7 @@ services:
     depends_on:
       postgres:
         condition: service_started
-    image: ghcr.io/sebsept/docker-php-symfony-starter:main
+    image: ghcr.io/sebsept/docker-php-symfony-starter:dev
     networks:
       nginx: null
       postgres: null

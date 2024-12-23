@@ -1,4 +1,4 @@
-docker_php_exec := "docker compose exec -it -u climber php"
+docker_php_exec := "docker compose exec -it -u dev php"
 symfony := docker_php_exec + " symfony "
 composer := symfony + " composer "
 console := symfony + "console "
